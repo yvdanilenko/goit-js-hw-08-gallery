@@ -120,17 +120,40 @@ document.addEventListener('keydown', (e) => {
 })
 
 function closeModal() {
+  window.removeEventListener('keydown', closeModalOnEsc)
+
   modalRef.classList.remove('is-open')
   modalContentRef.src = ''
   modalContentRef.alt = ''
 }
 
+// закрытие окна при нажатии на Esc
+function closeModalOnEsc(evt) {
+  const isEsc = evt.code === 'Escape'
+
+  if (isEsc) {
+    closeModal()
+  }
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Escape') {
+    modalRef.classList.remove('is-open')
+    modalRef.src = ''
+  }
+})
+
+const imgDataSources = galleryItems.map((el) => {
+  return el.original
+})
+
 function leftClick(currentIndex) {
   let nextIndex = currentIndex - 1
 
   if (nextIndex === -1) {
-    nextIndex = dataSource[nextIndex]
+    nextIndex = imgDataSources.length - 1
   }
+  modalContentRef.src = imgDataSources[nextIndex]
 }
 
 function rightCliick(currentIndex) {
